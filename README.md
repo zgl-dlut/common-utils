@@ -5,7 +5,7 @@
 #### ***HttpUtil***
 * 对RestTemplate进行了封装,满足各种get以及post的请求方式,<br>
     * 要在我们自己封装的Utils工具类中或者非controller普通类中使用@Autowired注解注入Service或者Mapper接口，<br>
-    直接注入是不可能的，因为***`Utils使用了静态的方法，我们是无法直接使用非静态接口的`***,<br>
+    直接注入是不可能的，因为***Utils使用了静态的方法，我们是无法直接使用非静态接口的***,<br>
     所以需要进行一些处理才能注入RestTemplate.<br>
     ```
     @Component
@@ -25,7 +25,7 @@
     ```
 #### MyHttpServletRequestWrapper ####
 * 拦截器能够获取到http请求的参数但是不能对其修改.继承了HttpServletRequestWrapper类替换
-入参的HttpServletRequest就可以实现对请求入参的***`header`***,***`body`***,***`params`***的修改.
+入参的HttpServletRequest就可以实现对请求入参的**header**,**body**,**params**的修改.
 配合过滤器能够在拦截器以及controller层之前进行而外的操作.
 
 #### JsonUtil ####
