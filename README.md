@@ -7,7 +7,7 @@
     * 要在我们自己封装的Utils工具类中或者非controller普通类中使用@Autowired注解注入Service或者Mapper接口，<br>
     直接注入是不可能的，因为***Utils使用了静态的方法，我们是无法直接使用非静态接口的***,<br>
     所以需要进行一些处理才能注入RestTemplate.<br>
-    ```
+    ```Java
     @Component
     @Slf4j
     public class HttpUtil {
@@ -39,7 +39,7 @@
 #### SpringContextUtil ####
 * 继承了ApplicationContextAware的类是能够获取到spring的上下文ApplicationContext的,
 通过getBean方法获取到容器中的bean.
-    ```
+    ```Java
     @Component
     public class SpringContextUtil implements ApplicationContextAware {
     
@@ -71,7 +71,7 @@
     ```
 #### GlobalExceptionHandler ####
 * restful形式的接口可以用@RestControllerAdvice注解配合@ExceptionHandler进行特定的异常处理.
-    ```
+    ```Java
     @Slf4j
     @RestControllerAdvice
     public class GlobalExceptionHandler {
@@ -89,7 +89,7 @@
     	}
     ```
     * 调用接口
-    ```
+    ```Java
     @GetMapping("/getAllSchool")
     	public Result getAllSchool() {
     		List<SchoolResp> allSchoolList = baseDataService.queryAllSchool();
@@ -97,7 +97,7 @@
     	}
     ```
     * 接口返回之定义
-    ```
+    ```Java
     public class Result {
     	private String code;
     
@@ -138,7 +138,7 @@
     ```
 * 下面是我之前的写法,相对来说不好扩展.
     * 调用接口
-    ```
+    ```Java
     @PostMapping(value = "/sendmessage")
     	public InterfaceResult sendMessage(@RequestHeader Integer msgType, @RequestBody String json) {
     		return InterfaceResult.build(()->
@@ -147,7 +147,7 @@
     	}
     ```
     * 接口返回值定义
-    ```
+    ```Java
     public class InterfaceResult implements Serializable {
     
     	private static final long serialVersionUID = -1406794481884372920L;
