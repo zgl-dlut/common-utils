@@ -1,7 +1,7 @@
 ## **common-utils**
 ### **公共类**
         里面主要是平时工作当中常用的静态工具类,会经常更新~.
-        比如**`Http工具类`**,**`Json工具类`**等.
+        比如***`Http工具类`***,***`Json工具类`***等.
 #### ***HttpUtil***
 * 对RestTemplate进行了封装,满足各种get以及post的请求方式,<br>
     * 要在我们自己封装的Utils工具类中或者非controller普通类中使用@Autowired注解注入Service或者Mapper接口，<br>
