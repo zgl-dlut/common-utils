@@ -23,30 +23,36 @@ public class BeanMapUtil {
 	 * @param ignoreProperties
 	 * @return
 	 */
-	public static Map beanToMap(Object source, String... ignoreProperties) {
+	public static Map<String, Object> beanToMap(Object source, String... ignoreProperties) {
 		Class clazz = source.getClass();
-		Map resultMap = new HashMap();
-		Field[] allFields = clazz.getDeclaredFields();
-		List<String> ignoreList = ignoreProperties != null ? Arrays.asList(ignoreProperties) : null;
-		for (Field field : allFields) {
-			String propertyName = field.getName();
-			if (ignoreList == null || !ignoreList.contains(propertyName)) {
-				try {
-					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), clazz);
-					Method readMethod = propertyDescriptor.getReadMethod();
-					if (readMethod != null) {
-						if (!Modifier.isPublic(readMethod.getDeclaringClass().getModifiers())) {
-							readMethod.setAccessible(true);
-						}
-						Object value = readMethod.invoke(source);
-						if (value != null && StringUtils.isNotEmpty(value.toString())) {
-							resultMap.put(propertyName, value);
-						}
+		Map<String, Object> resultMap = new HashMap<>();
+
+		try {
+			Method[] methods = clazz.getMethods();
+			List<String> ignoreList = (ignoreProperties != null ? Arrays.asList(ignoreProperties) : null);
+			for (Method readMethod : methods) {
+				String propertyName = readMethod.getName();
+				if(propertyName == null
+						|| !propertyName.startsWith("get")
+						|| propertyName.equals("getClass")){
+					continue;
+				}
+
+				propertyName = propertyName.substring(propertyName.indexOf("get") + 3);
+				propertyName = StringsUtil.toLowerCaseFirstOne(propertyName);
+				if (ignoreList == null || !ignoreList.contains(propertyName)) {
+					if (!Modifier.isPublic(readMethod.getDeclaringClass().getModifiers())) {
+						readMethod.setAccessible(true);
 					}
-				} catch (Exception e) {
-					throw new FatalBeanException("Could not convert to map", e);
+					Object value = readMethod.invoke(source);
+					if (value != null && StringUtils.isNotEmpty(value.toString())) {
+						resultMap.put(propertyName, value);
+					}
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Could not convert to map");
 		}
 		return resultMap;
 	}

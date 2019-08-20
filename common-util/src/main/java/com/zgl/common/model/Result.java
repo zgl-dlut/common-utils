@@ -2,80 +2,123 @@ package com.zgl.common.model;
 
 import com.zgl.common.enums.ErrCodeEnum;
 
+import java.io.Serializable;
+
 /**
  * 返回结果类
  * @author zgl
  * @date 2019/3/27 下午2:58
  */
-public class Result {
-	private String code;
+public class Result<T> implements Serializable {
+	private static final long serialVersionUID = -4745703790022338793L;
+
+	private boolean rlt;
 
 	private String message;
 
-	private Object data;
+	private String code;
+
+	private T data;
+
+	public static final String SUCCESS = "000000";
+
+	public static final String FAIL = "999999";
+
+	public static final String BIZ_ERROR = "000001";
 
 	public Result() {
 	}
 
-	public Result(String code, String message) {
-		this.code = code;
-		this.message = message;
-	}
-
-	public Result(String code, String message, Object data) {
-		this.code = code;
-		this.message = message;
-		this.data = data;
-	}
-
-	public Result(ErrCodeEnum errCodeEnum) {
-		this.code = errCodeEnum.getCode();
-		this.message = errCodeEnum.getMessage();
-	}
-
-	public Result(ErrCodeEnum errCodeEnum, Object data) {
-		this.code = errCodeEnum.getCode();
-		this.message = errCodeEnum.getMessage();
-		this.data = data;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
+	public boolean isRlt() {
+		return this.rlt;
 	}
 
 	public String getMessage() {
-		return message;
+		return this.message;
+	}
+
+	public String getCode() {
+		return this.code;
+	}
+
+	public T getData() {
+		return this.data;
+	}
+
+	public void setRlt(boolean rlt) {
+		this.rlt = rlt;
 	}
 
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
-	public Object getData() {
-		return data;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public void setData(Object data) {
+	public void setData(T data) {
 		this.data = data;
 	}
 
-	public static Result ok() {
-		return new Result(ErrCodeEnum.SUCCESS);
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		} else if (!(o instanceof Result)) {
+			return false;
+		} else {
+			Result<?> other = (Result)o;
+			if (!other.canEqual(this)) {
+				return false;
+			} else if (this.isRlt() != other.isRlt()) {
+				return false;
+			} else {
+				label49: {
+					Object this$message = this.getMessage();
+					Object other$message = other.getMessage();
+					if (this$message == null) {
+						if (other$message == null) {
+							break label49;
+						}
+					} else if (this$message.equals(other$message)) {
+						break label49;
+					}
+
+					return false;
+				}
+
+				Object this$code = this.getCode();
+				Object other$code = other.getCode();
+				if (this$code == null) {
+					if (other$code != null) {
+						return false;
+					}
+				} else if (!this$code.equals(other$code)) {
+					return false;
+				}
+
+				Object this$data = this.getData();
+				Object other$data = other.getData();
+				if (this$data == null) {
+					if (other$data != null) {
+						return false;
+					}
+				} else if (!this$data.equals(other$data)) {
+					return false;
+				}
+
+				return true;
+			}
+		}
 	}
 
-	public static Result ok(Object data) {
-		return new Result(ErrCodeEnum.SUCCESS, data);
+	protected boolean canEqual(Object other) {
+		return other instanceof Result;
 	}
 
-	public static Result error() {
-		return new Result(ErrCodeEnum.FAIL);
-	}
-
-	public static Result error(ErrCodeEnum errCodeEnum) {
-		return new Result(errCodeEnum);
+	@Override
+	public String toString() {
+		return "Result(rlt=" + this.isRlt() + ", message=" + this.getMessage() + ", code=" + this.getCode() + ", data=" + this.getData() + ")";
 	}
 }
