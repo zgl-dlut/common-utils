@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
 	public Result handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
 		BindingResult bindingResult = e.getBindingResult();
 		FieldError firstFieldError = bindingResult.getFieldErrors().get(0);
-		return new Result(ErrCodeEnum.REQUEST_PARAM_ERROR.getCode(), firstFieldError.getDefaultMessage());
+		return new Result();
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
 		Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
 		System.out.println(constraintViolations.toString());
 		String message = constraintViolations.iterator().next().getMessage();
-		return new Result(ErrCodeEnum.REQUEST_PARAM_ERROR.getCode(),message);
+		return new Result();
 	}
 
 	/**
@@ -63,8 +63,8 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.OK)
 	public Result handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
 		log.error("Unexpected error", e);
-		return new Result(ErrCodeEnum.REQUEST_PARAM_ERROR.getCode(), ErrCodeEnum.REQUEST_PARAM_ERROR.getMessage());
-	}
+		return new Result();
+}
 
 	/**
 	 * 参数校验错误异常处理
@@ -76,7 +76,7 @@ public class GlobalExceptionHandler {
 	public Result handleBindException(BindException e) {
 		BindingResult bindingResult = e.getBindingResult();
 		FieldError firstFieldError = bindingResult.getFieldErrors().get(0);
-		return new Result(ErrCodeEnum.REQUEST_PARAM_ERROR.getCode(), firstFieldError.getDefaultMessage());
+		return new Result();
 	}
 
 	/**
@@ -90,9 +90,9 @@ public class GlobalExceptionHandler {
 		ErrCodeEnum errCodeEnum = e.getErrCodeEnum();
 		e.printStackTrace();//输出异常信息
 		if (errCodeEnum != null) {
-			return new Result(errCodeEnum);
+			return new Result();
 		} else {
-			return new Result(e.getCode(), e.getMessage());
+			return new Result();
 		}
 	}
 
@@ -109,7 +109,7 @@ public class GlobalExceptionHandler {
 			return handleBusinessException((BusinessException) t);
 		}
 		log.error("Unexpected error", e);
-		return new Result(ErrCodeEnum.FAIL);
+		return new Result();
 	}
 
 	/**
@@ -121,6 +121,6 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public Result handleException(Exception e) {
 		log.error("Unexpected error", e);
-		return new Result(ErrCodeEnum.FAIL);
+		return new Result();
 	}
 }

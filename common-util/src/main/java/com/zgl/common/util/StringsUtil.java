@@ -1,5 +1,6 @@
 package com.zgl.common.util;
 
+import com.zgl.common.Constants;
 import com.zgl.common.enums.ErrorCodeEnum;
 import com.zgl.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
@@ -41,14 +42,17 @@ public class StringsUtil {
 	 */
 	public static List<String> initStringList(String strs, String separate, Integer maxSize) {
 		if (!StringUtils.isNoneBlank(strs, separate)) {
-			throw new BusinessException(ErrorCodeEnum.SYS_PARAM_ERROR);
+			throw new BusinessException(
+
+
+			);
 		}
 
 		String ids = strs.replaceAll(Constants.SEPARATE_SPACE, Constants.SEPARATE).trim();
 		String [] idLen = ids.split(separate);
 		if (idLen == null || idLen.length < 1) {
 			log.error("initIdList idLen is null.");
-			throw new BusinessException(ErrorCodeEnum.IDS_IS_NULL_ERROR);
+			throw new BusinessException();
 		}
 
 		List<String> idList = new ArrayList<String>();
@@ -65,12 +69,12 @@ public class StringsUtil {
 
 		if (CollectionUtils.isEmpty(idList)) {
 			log.error("initIdList idLen is null");
-			throw new BusinessException(ErrorCodeEnum.IDS_IS_NULL_ERROR);
+			throw new BusinessException();
 		}
 
 		if (idList.size() > maxSize) {
 			log.error("initIdList idLen size > {}", maxSize);
-			throw new BusinessException(ErrorCodeEnum.IDS_IS_NULL_ERROR);
+			throw new BusinessException();
 		}
 
 		return idList;
@@ -94,19 +98,19 @@ public class StringsUtil {
 	 */
 	public static String [] initStringLen(String strs, String separate, Integer maxSize) {
 		if (!StringUtils.isNoneBlank(strs, separate)) {
-			throw new BusinessException(ErrorCodeEnum.SYS_PARAM_ERROR);
+			throw new BusinessException();
 		}
 
 		String ids = strs.replaceAll(Constants.SEPARATE_SPACE, Constants.SEPARATE).trim();
 		String [] idLen = ids.split(separate);
 		if (idLen == null || idLen.length < 1) {
 			log.error("initIdList idLen is null.");
-			throw new BusinessException(ErrorCodeEnum.IDS_IS_NULL_ERROR);
+			throw new BusinessException();
 		}
 
 		if (idLen.length > maxSize) {
 			log.error("initIdList idLen size > {}", maxSize);
-			throw new BusinessException(ErrorCodeEnum.IDS_IS_NULL_ERROR);
+			throw new BusinessException();
 		}
 
 		return idLen;
