@@ -12,7 +12,7 @@ public class DoubleCheckSingleton {
 	private DoubleCheckSingleton(){}
 
 	/**
-	 * 双重校验线程低概率不安全
+	 * 双重校验线程低概率不安全(不加volatile的情况下)
 	 */
 	public static DoubleCheckSingleton getInstance() {
 		if (null == instance) {
