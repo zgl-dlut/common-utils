@@ -1,6 +1,7 @@
 package com.zgl.common.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zgl.common.enums.ErrorCodeEnum;
 import com.zgl.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Consts;
@@ -10,6 +11,8 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,7 +156,52 @@ public class HttpUtils {
 			throw new BusinessException();
 		}
 	}
+	public static InputStream doPostFromStream(String url, Map<String, Object> headerMap, Map<String, Object> paramMap) {
+		log(headerMap, paramMap, url);
+		if (paramMap == null || url == null) {
+			throw new BusinessException();
+		}
+		try {
+			Request request = Request.Post(url)
+					.connectTimeout(5000)
+					.socketTimeout(5000);
+			if (null != headerMap) {
+				for (String key : headerMap.keySet()) {
+					request.setHeader(key, String.valueOf(headerMap.get(key)));
+				}
+			}
+			List<NameValuePair> paramSpairs = new ArrayList<>();
+			for (String key : paramMap.keySet()) {
+				paramSpairs.add(new BasicNameValuePair(key, String.valueOf(paramMap.get(key))));
+			}
+			return request.bodyForm(paramSpairs, Charset.forName("utf-8")).execute().returnContent().asStream();
+		} catch (IOException e) {
+			log.error("远程调用接口出错:" + url + ",状态码：" + e.getMessage());
+			throw new BusinessException();
+		}
+	}
 
+	public static InputStream doGetStream(String url, Map<String, Object> headMap, Map<String, Object> paramMap) {
+		log(headMap, paramMap, url);
+		if (paramMap == null || url == null ) {
+			throw new BusinessException();
+		}
+		try {
+			url = getUrlParam(url, paramMap);
+			Request request = Request.Get(url)
+					.connectTimeout(5000)
+					.socketTimeout(5000);
+			if (headMap != null) {
+				for (String key : headMap.keySet()) {
+					request.setHeader(key, String.valueOf(headMap.get(key)));
+				}
+			}
+			return request.execute().returnContent().asStream();
+		} catch (Exception e) {
+			log.error("远程调用接口出错:"+url+",状态码："+ e.getMessage());
+			throw new BusinessException();
+		}
+	}
 
 
 	private static void changListToUrl(Map<String, Object> paramMap, List<NameValuePair> paramList, StringBuilder listParam) {

@@ -2,9 +2,12 @@ package com.zgl.common.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -97,5 +100,25 @@ public class JsonUtil {
 	 */
 	public static String list2Json(List list){
 		return JSONArray.toJSONString(list);
+	}
+
+	/**
+	 * post form表单接收的@Request Sting body格式 转换成jsonString
+	 * @param json
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getFormJsonString (String json) throws Exception{
+		String[] params = URLDecoder.decode(json, "UTF-8").split("&");
+		Map<String, Object> map = new HashMap<>();
+		for (String param : params) {
+			String[] pair = param.split("=");
+			if (pair.length != 2) {
+				map.put(pair[0], "");
+			} else {
+				map.put(pair[0], pair[1]);
+			}
+		}
+		return new JSONObject(map).toJSONString();
 	}
 }
