@@ -21,7 +21,7 @@ public class CacheServiceImpl implements CacheService{
 
 	@Override
 	public <T> Map<String, T> cacheQueryExistInfoMap(List<String> keys, Class<T> classType, Function<T, String> mapper) {
-		keys = ListUtils.removeDuplicate(keys);
+		/*keys = ListUtils.removeDuplicate(keys);
 		List<T> infoList = RedisUtils.cacheQuery(keys, classType);
 		Map<String, T> resultMap = Maps.newHashMap();
 		if (CollectionUtils.isNotEmpty(infoList)) {
@@ -30,6 +30,7 @@ public class CacheServiceImpl implements CacheService{
 			}
 		}
 		log.info("缓存查询成功:{}", resultMap);
-		return resultMap;
+		return resultMap;*/
+		return null;
 	}
 }

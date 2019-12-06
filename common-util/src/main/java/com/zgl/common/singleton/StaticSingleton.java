@@ -20,7 +20,7 @@ public class StaticSingleton {
 	}
 
 	public static void main(String[] args) {
-		StaticSingleton instance = new StaticSingleton();
+		//StaticSingleton instance = new StaticSingleton();
 		StaticSingleton instance1 = StaticSingleton.getInstance();
 		StaticSingleton instance2 = StaticSingleton.getInstance();
 	}

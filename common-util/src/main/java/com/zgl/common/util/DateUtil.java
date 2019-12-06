@@ -138,4 +138,7 @@ public class DateUtil {
 		return Instant.ofEpochMilli(timeStamp).atZone(ZoneOffset.ofHours(8)).toLocalDateTime();
 	}
 
+	public static LocalDate convertLocalDateTimeToLocalDate(LocalDateTime localDateTime) {
+		return localDateTime.toLocalDate();
+	}
 }
